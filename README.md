@@ -36,12 +36,16 @@ A common problem for Behold is the extremely manual classification of new produc
 ## **Part 2 - Recommender Algorithm**
 
 ### Overview
-After trying to assign categories by ourselves and using those in our search query, we realized that our algorithm performance is not as good as expected. Thus, we decided to focus on the data with category labels, which are the data in the outfit_combination dataset.
+The most important part of our very beginning attemps were to create an algorithm rule to predict the category of those products without category, and then use around 60,000 product data for the recommendation system. The accuracy rate of our prediction was about 88%. We made up some input queries and checked out the output (recommended outfit combination) may not work as well as we predicted since some products were assigned to the wrong category.
+
+Therefore, we decided to only use product data with category labels and outfit id in our final version, which was the data in the `outfit_combination` dataset. 
+
+The algorithm would process the input queries, find out the product with the highest similarity and its outfit id, output the recommended outfit combination using the same outfit id.
 
 ### Data Pre-processing 
 - We merged the outfit_combination dataset with the product dataset using left join. 
 - We combined the features 'product_full_name', 'details', and 'description' together as our new text feature. 
-- We used regex to remove punctuations on the combined feature and used the nltk package to remove stopwords. 
+- We used regex to remove punctuations on the combined feature and used the `nltk` package to remove stopwords. 
 - We performed lemmatization on the combined text feature.
 
 ### Clean the input query:
