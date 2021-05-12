@@ -42,14 +42,17 @@ Therefore, we decided to only use product data with category labels and outfit i
 
 The algorithm would process the input queries, find out the product with the highest similarity and its outfit id, output the recommended outfit combination using the same outfit id.
 
-### Data Pre-processing 
-- We merged the outfit_combination dataset with the product dataset using left join. 
-- We combined the features 'product_full_name', 'details', and 'description' together as our new text feature. 
+### Data Pre-Processing for the Original Datasets
+- We merged the outfit_combination dataset with the product dataset using `left join`. 
+- We combined the features `product_full_name`, `details`, and `description` together as our new text feature. 
 - We used regex to remove punctuations on the combined feature and used the `nltk` package to remove stopwords. 
 - We performed lemmatization on the combined text feature.
 
-### Clean the input query:
-- We used regex to remove punctuation and digits in the input query
+### Data Pre-Processing for the Input Query
+- We used regex to remove punctuation and digits of the input query and used the `nltk` package to remove stopwords. 
+- We performed lemmatization on the input query.
+
+### Predict Product Category of the Input Query
 - We then applied domain knowledge to determine the product category that the user is trying to search. Then our algorithm will return the most similarity product in that category. 
 
 ### Recommendation function:
