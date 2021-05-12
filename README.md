@@ -75,9 +75,15 @@ A sample input query was `yellow onepiece for beach with pink flower` and the ou
 2. We have tried to label the category for each item based on given text features such as `name`, `brand_category`, `description`, and `details`. There are four reasons why we chose to use word frequency and regex matching instead of building a classification model when making labeling the category:
     - The `product_category`column contained given information of each product’s category while `product_category` of most records was unknown.
     - For the products with known categories, there were only about 800 unique products. The number of records with labels was too small compared to the whole dataset. 
-    - Among these products with category labels, we found out some cases that the name and category of one product were obviously contradicted. E.g., the name of one product with ID as `01DT0C8NM9KG2EF0A286VZRETE` is `Tank top in Re-Imagined Silk` while its category is `accessory1`.
+    - Among these products with category labels, we found out some cases that the name and category of one product were obviously contradicted. E.g., the name of one product with ID as `01DT0C8NM9KG2EF0A286VZRETE` is `Tank top in Re-Imagined Silk`. The name seemed to indicate that this product belonged to `top` but the given category was `accessory1`.
     - There are only 5 product categories in the given labels while we thought there are many products which do not belong to any of these categories. E.g. the name of one product with ID as `01EEBHWPA3BEBQGBMXGN8KZTTG` is `PETAL Candle`. The description of this product also shows that this product is a kind of candle, not an outfit.
 
     However, when we tried to label the products without category based on word frequency, it turned out that the match results did not have a satisfying accuracy which may further affect the selected product by the search function. We believed that an accurate result was more important for our function so that we decided to use only the products with product categories and products with `outfit_id` in the outfit dataset to match the query. Although fewer data entries are used, we were able to obtain a more accurate result.
 
-3. We have tried `CountVectorizer` to vectorize the products but we finally chose `TF-IDF` method since the `TF-IDF` method balanced out the term frequency (how often the word appears in the document) with its inverse document frequency (how often the term appears across all documents in the data set).
+3. We have tried `CountVectorizer` method to vectorize the products but we finally chose `TF-IDF` method since the `TF-IDF` method balanced out the term frequency (how often the word appears in the document) with its inverse document frequency (how often the term appears across all documents in the data set).
+
+4. We have created another brand recommender algorithm using around 60,000 products with given or predicted categories, and the logic of the algorithm is:
+    - Find out the most matched product in each category with the highest cosine similarity using the vector of input query and existing products.
+    - Check if the mosted matched product has an outfit ID. If yes, then return the product id in each category with the same outfit id.
+    - Compare the cosine similarity of onepiece, top, and bottom to determine whether the outfit contains onepiece only or contains top and bottom only.
+    - Return the product in each category.
