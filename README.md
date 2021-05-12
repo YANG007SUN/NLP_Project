@@ -64,7 +64,10 @@ After that, we calculated the cosine similarity between the query and each produ
 
 ### Sample Input Query and Output
 
-
+A sample input query was `yellow onepiece for beach with pink flower` and the output (recommended outfit combination) was:
+- onepiece: **Ida Dress** (01DPD4R5X5TQCWTVTC2AEAFC10)
+- shoe: **Virginia Boot** (01DPKNCMSFAWF2HVQSRHHXDV0K)
+- accessory: **Cassi Belt Bag** (01DPEHS0XH9PDD1GH5ZE4P43A2)
  
 ### Our Previous Attempts
 1. We first tried to use `spaCy`'s internal similarity function to calculate the similarity between the user query and each of our new text feature, which was the combination of `product_full_name`, `details`, and `description`. Then, we found the product with the largest similarity. If the product already has an expert-defined outfit, then the function would return all products with the same outfit ID; otherwise, it would return the single product with the highest similarity. We chose not to use this function because that `spaCy` had a computationally expensive algorithm to find the similarity, and each query might take up to 20 minutes to finish the execution. Therefore, we decided to try a more efficient algorithm.
