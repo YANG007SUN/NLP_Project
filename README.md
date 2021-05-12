@@ -25,7 +25,7 @@ A common problem for Behold is the extremely manual classification of new produc
 - **Word Embedding**
     - We used word embedding technique to vectorize `concat_features` column. 
     - We used `GloVe Vectors` which was pre-trained by google. 
-    - We only looked at top 200 words with the most frequency, meaning, ignoring words which show less frequently to aviod overfitting, and we also defined our max sentence length as 128. 
+    - We only looked at top 200 words with the most frequency, meaning, ignoring words which show less frequently to avoid overfitting, and we also defined our max sentence length as 128. 
 
 ### Fit LSTM Model
 - We had 61355 rows X 128 columns word vector ready for modeling, and we had 31 categories for y labels.
@@ -36,7 +36,7 @@ A common problem for Behold is the extremely manual classification of new produc
 ## **Part 2 - Recommender Algorithm**
 
 ### Overview
-The most important part of our very beginning attemps were to create an algorithm rule to predict the category of those products without category, and then use around 60,000 product data for the recommendation system. The accuracy rate of our prediction was about 88%. We made up some input queries and checked out the output (recommended outfit combination) may not work as well as we predicted since some products were assigned to the wrong category.
+The most important part of our very beginning attempts was to create an algorithm rule to predict the category of those products without category, and then use around 60,000 product data for the recommendation system. The accuracy rate of our prediction was about 88%. We made up some input queries and checked out the output (recommended outfit combination) may not work as well as we predicted since some products were assigned to the wrong category.
 
 Therefore, we decided to only use product data with category labels and outfit id in our final version, which was the data in the `outfit_combination` dataset. 
 
