@@ -57,4 +57,15 @@ After trying to assign categories by ourselves and using those in our search que
 - As mention in the last section, we determined the product category of the search query beforehand. Our algorithm will return the most similar product in the category of interest.
 - We extracted the outfit ID of the most similar product and found all the products share the same outfit ID. We returned all the products in that outfit set.  
  
+ 
+ 
+### What we tried but not used:
+1.	We first tried to use spaCy's internal similarity function to calculate the similarity between the user query and each of our new text feature which is the combination of 'product_full_name', 'details', and 'description'. Then, we find the product with the largest similarity, if the product already has an expert-defined outfit, then the function will return the whole outfit, otherwise, it will return the single product with the highest similarity. We chose not to use this function because that spaCy has a computationally expensive algorithm to find the similarity, so that each query may take up to 20 minutes to finish the execution. So, we decide to try more efficient algorithm.
+2.	We also tried to label the category for each item based on given text features such as product name and description instead of using the ‘product_category’ column in the original dataset. There are four reasons why we chose to use word frequency and regex matching instead of building a classification model:
+- The ‘product_category’ column which contains the given information of each product’s category while most rows containing the value ‘unknown’.  
+- For the products with known category, there are only about 800 unique products which is too small a part compared to the whole dataset. 
+- Among these products with category labels, we found some cases that the product name and the category are obviously contradict with each other.  
+- There are only 5 product categories in the given labels while we thought there are many products which do not belong to any of these categories.
+
+However, when we tried to label the product without category based on word frequency, it turned out that the match results did not have a satisfying accuracy which may further affect the selected product by the search function. We believed that an accuracy result is more important for our function, so that we decide to use only the products with product categories and products with outfit_id in the outfit dataset to match the query. Although less data entries are used, we are able to obtain a more accurate result.
 
