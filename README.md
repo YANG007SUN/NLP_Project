@@ -52,12 +52,10 @@ The algorithm would process the input queries, find out the product with the hig
 - We used regex to remove punctuation and digits of the input query and used the `nltk` package to remove stopwords. 
 - We performed lemmatization on the input query.
 
-### Predict Product Category of the Input Query
+### Label Product Category of the Input Query
 We applied domain knowledge and created a rule-based algorithm to determine the category of the product that the user was trying to search for. 
 
 To be specific, we collected over 20 relevant keywords for each category using our business domain knowledge. The rule-based algorithm created a dictionary for each record and counted the frequency of the keywords in each category, and set the most frequent category as the category of the product. If there was no category matched, the algorithm would set the category as `Unknown`. If two or more categories had the same frequency, the algorithm would randomly pick one as the category of the product. 
-
-(An alternative way is to calculate the cosine similarity between the query and each product, and predict the product category of the input query using the category of product with the highest cosine similarity. Will write this in the previous attempt part.)
 
 ### Our Brand Recommender Algorithm
 We used the TF-IDF method to vectorize the product table, and the `Max_feature` is set to 1000 to reduce complexity. First, we summed the TF-IDF scores for each document. Second, we tokenized each product and calculated the using total embedding for each token. Third, we divided the running total by the sum of the TF-IDF score for the document to generate the weighted TF-IDF embedding for each sentence. 
@@ -71,11 +69,10 @@ After that, we calculated the cosine similarity between the query and each produ
 ### Our Previous Attempts
 1. We first tried to use `spaCy`'s internal similarity function to calculate the similarity between the user query and each of our new text feature, which was the combination of `product_full_name`, `details`, and `description`. Then, we found the product with the largest similarity. If the product already has an expert-defined outfit, then the function would return all products with the same outfit ID; otherwise, it would return the single product with the highest similarity. We chose not to use this function because that `spaCy` had a computationally expensive algorithm to find the similarity, and each query might take up to 20 minutes to finish the execution. Therefore, we decided to try a more efficient algorithm.
 
-2. We also tried to label the category for each item based on given text features such as product name and description instead of using the ‘product_category’ column in the original dataset. There are four reasons why we chose to use word frequency and regex matching instead of building a classification model when making labeling the category:
-- The ‘product_category’ column which contains the given information of each product’s category while most rows containing the value ‘unknown’.  
-- For the products with known category, there are only about 800 unique products which is too small a part compared to the whole dataset. 
-- Among these products with category labels, we found some cases that the product name and the category are obviously contradict with each other.  
-- There are only 5 product categories in the given labels while we thought there are many products which do not belong to any of these categories.
+2. We also tried to label the category for each item based on given text features such as `name`, `brand_category`, `description`, and `details`. There are four reasons why we chose to use word frequency and regex matching instead of building a classification model when making labeling the category:
+    - The `product_category`column contained given information of each product’s category while `product_category` of most records was unknown.
+    - For the products with known categories, there were only about 800 unique products. The number of records with labels was too small compared to the whole dataset. 
+    - Among these products with category labels, we found out some cases that the name and category of one product were obviously contradicted. E.g., the name of one product with ID as `01DT0C8NM9KG2EF0A286VZRETE` is `Tank top in Re-Imagined Silk` while its category is `accessory1`.
+    - There are only 5 product categories in the given labels while we thought there are many products which do not belong to any of these categories. E.g. the name of one product with ID as `01EEBHWPA3BEBQGBMXGN8KZTTG` is `PETAL Candle`. The description of this product also shows that this product is a kind of candle, not an outfit.
 
-However, when we tried to label the product without category based on word frequency, it turned out that the match results did not have a satisfying accuracy which may further affect the selected product by the search function. We believed that an accurate result is more important for our function, so that we decide to use only the products with product categories and products with outfit_id in the outfit dataset to match the query. Although less data entries are used, we are able to obtain a more accurate result.
-
+    However, when we tried to label the products without category based on word frequency, it turned out that the match results did not have a satisfying accuracy which may further affect the selected product by the search function. We believed that an accurate result was more important for our function so that we decided to use only the products with product categories and products with `outfit_id` in the outfit dataset to match the query. Although fewer data entries are used, we were able to obtain a more accurate result.
