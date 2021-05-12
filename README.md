@@ -40,10 +40,10 @@ The most important part of our very beginning attemps were to create an algorith
 
 Therefore, we decided to only use product data with category labels and outfit id in our final version, which was the data in the `outfit_combination` dataset. 
 
-The algorithm would process the input queries, find out the product with the highest similarity and its outfit id, output the recommended outfit combination using the same outfit id.
+The algorithm would process the input queries, find out the product with the highest similarity and its outfit id, output the recommended outfit combination using the same outfit ID.
 
 ### Data Pre-Processing for the Original Datasets
-- We merged the outfit_combination dataset with the product dataset using `left join`. 
+- We merged the `outfit_combination` dataset with the product dataset using `left join`. 
 - We combined the features `product_full_name`, `details`, and `description` together as our new text feature. 
 - We used regex to remove punctuations on the combined feature and used the `nltk` package to remove stopwords. 
 - We performed lemmatization on the combined text feature.
@@ -53,20 +53,22 @@ The algorithm would process the input queries, find out the product with the hig
 - We performed lemmatization on the input query.
 
 ### Predict Product Category of the Input Query
-- We then applied domain knowledge to determine the product category that the user is trying to search. Then our algorithm will return the most similarity product in that category. 
+We applied domain knowledge and created a rule-based algorithm to determine the category of the product that the user was trying to search for. 
 
-### Recommendation function:
-- We used TF-IDF to vectorize the product table. Max_feature is set to 1000 to reduce complexity
-- We then summed the TF-IDF scores for each document
-- We tokenized each product and calculated the uning total embedding for each token
-- We then divided the running total by the sum of TF-IDF score for the document to generate the weighted TF-IDF embedding for each sentence. 
-- We calculated cosine similarity between the query and each product
-- As mention in the last section, we determined the product category of the search query beforehand. Our algorithm will return the most similar product in the category of interest.
-- We extracted the outfit ID of the most similar product and found all the products share the same outfit ID. We returned all the products in that outfit set.  
+To be specific, we collected over 20 relevant keywords for each category using our business domain knowledge. The rule-based algorithm created a dictionary for each record and counted the frequency of the keywords in each category, and set the most frequent category as the category of the product. If there was no category matched, the algorithm would set the category as `Unknown`. If two or more categories had the same frequency, the algorithm would randomly pick one as the category of the product. 
+
+(An alternative way is to calculate the cosine similarity between the query and each product, and predict the product category of the input query using the category of product with the highest cosine similarity. Will write this in the previous attempt part.)
+
+### Our Brand Recommender Algorithm
+We used the TF-IDF method to vectorize the product table, and the `Max_feature` is set to 1000 to reduce complexity. First, we summed the TF-IDF scores for each document. Second, we tokenized each product and calculated the uning(?) total embedding for each token. Third, we divided the running total by the sum of the TF-IDF score for the document to generate the weighted TF-IDF embedding for each sentence. 
+
+After that, we calculated the cosine similarity between the query and each product. As mention in the last section, we determined the product category of the input query beforehand. Our recommender algorithm would then return the product with the highest cosine similarity in that category based on the input query. After that, the algorithm would extract the outfit ID of the most similar product and find out all the products sharing the same outfit ID. Finally, the algorithm would return all the products in that outfit set.
+
+### Sample Input Query and Output
+
+
  
- 
- 
-### What we tried but not used:
+### Our Previous Attempts
 1.	We first tried to use spaCy's internal similarity function to calculate the similarity between the user query and each of our new text feature which is the combination of 'product_full_name', 'details', and 'description'. Then, we find the product with the largest similarity, if the product already has an expert-defined outfit, then the function will return the whole outfit, otherwise, it will return the single product with the highest similarity. We chose not to use this function because that spaCy has a computationally expensive algorithm to find the similarity, so that each query may take up to 20 minutes to finish the execution. So, we decide to try more efficient algorithm.
 
 2.	We also tried to label the category for each item based on given text features such as product name and description instead of using the ‘product_category’ column in the original dataset. There are four reasons why we chose to use word frequency and regex matching instead of building a classification model when making labeling the category:
