@@ -34,3 +34,27 @@ A common problem for Behold is the extremely manual classification of new produc
 - Finally, we achieved **89.5%** accuracy on testing dataset.
 
 ## **Part 2 - Recommender Algorithm**
+
+### Overview
+After trying to assign categories by ourselves and using those in our search query, we realized that our algorithm performance is not as good as expected. Thus, we decided to focus on the data with category labels, which are the data in the outfit_combination dataset.
+
+### Data Pre-processing 
+- We merged the outfit_combination dataset with the product dataset using left join. 
+- We combined the features 'product_full_name', 'details', and 'description' together as our new text feature. 
+- We used regex to remove punctuations on the combined feature and used the nltk package to remove stopwords. 
+- We performed lemmatization on the combined text feature.
+
+### Clean the input query:
+- We used regex to remove punctuation and digits in the input query
+- We then applied domain knowledge to determine the product category that the user is trying to search. Then our algorithm will return the most similarity product in that category. 
+
+### Recommendation function:
+- We used TF-IDF to vectorize the product table. Max_feature is set to 1000 to reduce complexity
+- We then summed the TF-IDF scores for each document
+- We tokenized each product and calculated the uning total embedding for each token
+- We then divided the running total by the sum of TF-IDF score for the document to generate the weighted TF-IDF embedding for each sentence. 
+- We calculated cosine similarity between the query and each product
+- As mention in the last section, we determined the product category of the search query beforehand. Our algorithm will return the most similar product in the category of interest.
+- We extracted the outfit ID of the most similar product and found all the products share the same outfit ID. We returned all the products in that outfit set.  
+ 
+
