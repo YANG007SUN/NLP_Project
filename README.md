@@ -60,7 +60,7 @@ To be specific, we collected over 20 relevant keywords for each category using o
 (An alternative way is to calculate the cosine similarity between the query and each product, and predict the product category of the input query using the category of product with the highest cosine similarity. Will write this in the previous attempt part.)
 
 ### Our Brand Recommender Algorithm
-We used the TF-IDF method to vectorize the product table, and the `Max_feature` is set to 1000 to reduce complexity. First, we summed the TF-IDF scores for each document. Second, we tokenized each product and calculated the uning(?) total embedding for each token. Third, we divided the running total by the sum of the TF-IDF score for the document to generate the weighted TF-IDF embedding for each sentence. 
+We used the TF-IDF method to vectorize the product table, and the `Max_feature` is set to 1000 to reduce complexity. First, we summed the TF-IDF scores for each document. Second, we tokenized each product and calculated the using total embedding for each token. Third, we divided the running total by the sum of the TF-IDF score for the document to generate the weighted TF-IDF embedding for each sentence. 
 
 After that, we calculated the cosine similarity between the query and each product. As mention in the last section, we determined the product category of the input query beforehand. Our recommender algorithm would then return the product with the highest cosine similarity in that category based on the input query. After that, the algorithm would extract the outfit ID of the most similar product and find out all the products sharing the same outfit ID. Finally, the algorithm would return all the products in that outfit set.
 
